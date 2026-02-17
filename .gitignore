@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Secrets
+.env
+
+# State
+data/seen_urls.json
+
+# OS
+.DS_Store
