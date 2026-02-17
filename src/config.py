@@ -45,13 +45,20 @@ SEARCH_QUERIES = [
 # ── Hard filters (score override → 0) ────────────────────────────────────────
 # Any result matching these phrases fails the remote filter regardless of score
 REMOTE_REJECT_PHRASES = [
+    # Country/city requirements
     "poland-based", "poland based", "must be in poland", "must be based in poland",
     "krakow", "kraków", "warsaw office", "warsaw-based",
-    "on-site", "onsite", "on site", "hybrid", "in-office", "in office",
-    "occasional travel required", "travel to office",
-    "must be located", "must reside", "must live in",
     "germany-based", "uk-based", "netherlands-based", "france-based",
+    "must be located", "must reside", "must live in",
     "requires relocation",
+    # On-site / hybrid signals
+    "on-site", "onsite", "on site",
+    "hybrid", "in-office", "in office",
+    "days in office", "days in-office", "days per week in",
+    "occasional travel required", "travel to office",
+    # LatAm-focused (not Spain/EU remote)
+    "latin america", "latam", "colombia", "costa rica",
+    "mexico city", "bogota", "são paulo",
 ]
 
 SCORE_WEIGHTS = {
