@@ -5,7 +5,7 @@ import logging
 from typing import List, Dict
 from datetime import datetime, timezone
 
-from .config import SCORE_WEIGHTS
+from .config import SCORE_WEIGHTS, REMOTE_REJECT_PHRASES
 
 logger = logging.getLogger(__name__)
 
@@ -14,10 +14,17 @@ def score_result(result: Dict) -> int:
     """
     Score a result by relevance to Jurek's target criteria.
 
-    Checks title + description against SCORE_WEIGHTS.
-    Returns integer score (higher = more relevant).
+    HARD FILTER: Returns 0 immediately if any remote-reject phrase is found
+    (on-site, hybrid, country-specific location requirements).
+    Jurek is based in Canary Islands, Spain — fully remote only.
     """
     text = f"{result.get('title', '')} {result.get('description', '')}".lower()
+
+    # Hard filter: reject non-remote roles immediately
+    for phrase in REMOTE_REJECT_PHRASES:
+        if phrase in text:
+            return 0
+
     score = 0
     for keyword, weight in SCORE_WEIGHTS.items():
         if keyword.lower() in text:
@@ -107,7 +114,8 @@ NON_JOB_URL_PATTERNS = [
     "reddit.com", "quora.com", "medium.com", "levels.fyi",
     "glassdoor.com/salary", "indeed.com/career", "builtin.com/salary",
     "ziprecruiter.com/salary", "payscale.com", "compensation",
-    "wikipedia.org",  # wiki articles
+    "wikipedia.org",
+    "udemy.com", "coursera.org", "edx.org",  # courses, not jobs
 ]
 NON_JOB_TITLE_PATTERNS = [
     "salary guide", "salary calculator", "complete guide", "how to",

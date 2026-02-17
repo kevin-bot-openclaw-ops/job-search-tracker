@@ -42,6 +42,18 @@ SEARCH_QUERIES = [
 ]
 
 # ── Relevance scoring weights ─────────────────────────────────────────────────
+# ── Hard filters (score override → 0) ────────────────────────────────────────
+# Any result matching these phrases fails the remote filter regardless of score
+REMOTE_REJECT_PHRASES = [
+    "poland-based", "poland based", "must be in poland", "must be based in poland",
+    "krakow", "kraków", "warsaw office", "warsaw-based",
+    "on-site", "onsite", "on site", "hybrid", "in-office", "in office",
+    "occasional travel required", "travel to office",
+    "must be located", "must reside", "must live in",
+    "germany-based", "uk-based", "netherlands-based", "france-based",
+    "requires relocation",
+]
+
 SCORE_WEIGHTS = {
     # Seniority signals (required)
     "senior": 10, "principal": 15, "staff": 12, "lead": 10, "head of": 15,
