@@ -3,7 +3,7 @@
 import re
 import logging
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .config import SCORE_WEIGHTS
 
@@ -81,6 +81,11 @@ def parse_results(raw_results: List[Dict]) -> List[Dict]:
             logger.debug(f"Skipping low-score result (score={score}): {title[:50]}")
             continue
 
+        # Skip salary guides / articles masquerading as jobs
+        if _is_non_job(url, title):
+            logger.debug(f"Skipping non-job page: {title[:50]}")
+            continue
+
         jobs.append({
             "title": title,
             "url": url,
@@ -88,13 +93,50 @@ def parse_results(raw_results: List[Dict]) -> List[Dict]:
             "salary": extract_salary(full_text),
             "location": extract_location(full_text),
             "score": score,
-            "date_found": datetime.utcnow().strftime("%Y-%m-%d"),
+            "date_found": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
             "source": _extract_source(url),
             "status": "new",
         })
 
     logger.info(f"Parsed {len(jobs)} relevant jobs from {len(raw_results)} raw results")
     return jobs
+
+
+NON_JOB_URL_PATTERNS = [
+    "salary", "calculator", "guide", "article", "blog", "news",
+    "reddit.com", "quora.com", "medium.com", "levels.fyi",
+    "glassdoor.com/salary", "indeed.com/career", "builtin.com/salary",
+    "ziprecruiter.com/salary", "payscale.com", "compensation",
+    "wikipedia.org",  # wiki articles
+]
+NON_JOB_TITLE_PATTERNS = [
+    "salary guide", "salary calculator", "complete guide", "how to",
+    "what is", "breakdown by", "average salary", "salaries in",
+    "salary in 20", "salary for", "a guide to",
+    " - wikipedia",  # wiki articles
+    "job description",  # "Job Description [Updated...]" style articles
+    "hire ", "vetted talent", "talent marketplace",  # staffing marketplaces
+    "vs ", " vs.",  # comparison articles
+    "key differences",
+]
+
+
+def _is_non_job(url: str, title: str) -> bool:
+    """Return True if the result looks like a non-job page."""
+    url_lower = url.lower()
+    title_lower = title.lower()
+
+    # remoteok.com category listing pages (not individual job postings)
+    if "remoteok.com" in url_lower and "/remote-jobs/" not in url_lower:
+        return True
+
+    for pattern in NON_JOB_URL_PATTERNS:
+        if pattern in url_lower:
+            return True
+    for pattern in NON_JOB_TITLE_PATTERNS:
+        if pattern in title_lower:
+            return True
+    return False
 
 
 def _extract_source(url: str) -> str:

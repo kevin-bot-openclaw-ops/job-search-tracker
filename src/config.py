@@ -25,14 +25,20 @@ FRESHNESS: str = os.getenv("FRESHNESS", "pm")  # pm = past month
 # ── Search queries ────────────────────────────────────────────────────────────
 # Designed to surface senior AI/ML roles with real budget, EU/remote friendly
 SEARCH_QUERIES = [
-    'site:linkedin.com/jobs "senior ML engineer" remote OR EU "150k" OR "€150" OR "€120"',
-    'site:linkedin.com/jobs "ML platform engineer" senior remote OR Europe contract OR permanent',
-    'site:linkedin.com/jobs "AI engineer" senior "LLM" OR "RAG" remote Europe',
-    'site:remoteok.com "senior" "machine learning" OR "AI engineer" "$" Europe',
-    '"senior machine learning engineer" remote EU "€100k" OR "€120k" OR "€150k" -intern -junior',
-    '"ML engineer" OR "AI engineer" senior principal staff remote Europe "100,000" OR "120,000" OR "150,000"',
-    'site:weworkremotely.com "machine learning" OR "AI" senior engineer',
-    '"backend engineer" "ML" OR "LLM" OR "RAG" OR "AI" senior remote EU contract OR permanent',
+    # RemoteOK — open, well-indexed, good remote tech jobs
+    'site:remoteok.com "machine learning" OR "ML engineer" OR "AI engineer" senior',
+    'site:remoteok.com "backend" "AI" OR "LLM" OR "RAG" senior engineer',
+    # workatastartup.com (YC companies)
+    'site:workatastartup.com "machine learning" OR "AI" senior engineer remote',
+    # Broad web — job postings that escape paywalls
+    '"senior machine learning engineer" OR "senior ML engineer" remote EU hiring 2025 OR 2026',
+    '"senior AI engineer" "LLM" OR "RAG" OR "GenAI" remote Europe "apply" OR "job" OR "position"',
+    # ML Platform / MLOps niche (Jurek's infrastructure angle)
+    '"ML platform engineer" OR "MLOps engineer" senior remote Europe hiring',
+    # Backend + AI hybrid (Jurek's strongest niche)
+    '"backend engineer" "machine learning" OR "LLM" OR "RAG" senior remote Europe contract',
+    # EU-specific job boards
+    'site:euremotejobs.com OR site:remote.io "machine learning" OR "AI engineer" senior',
 ]
 
 # ── Relevance scoring weights ─────────────────────────────────────────────────
