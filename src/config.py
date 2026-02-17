@@ -25,20 +25,23 @@ FRESHNESS: str = os.getenv("FRESHNESS", "pm")  # pm = past month
 # ── Search queries ────────────────────────────────────────────────────────────
 # Designed to surface senior AI/ML roles with real budget, EU/remote friendly
 SEARCH_QUERIES = [
-    # RemoteOK — open, well-indexed, good remote tech jobs
-    'site:remoteok.com "machine learning" OR "ML engineer" OR "AI engineer" senior',
-    'site:remoteok.com "backend" "AI" OR "LLM" OR "RAG" senior engineer',
-    # workatastartup.com (YC companies)
-    'site:workatastartup.com "machine learning" OR "AI" senior engineer remote',
-    # Broad web — job postings that escape paywalls
-    '"senior machine learning engineer" OR "senior ML engineer" remote EU hiring 2025 OR 2026',
-    '"senior AI engineer" "LLM" OR "RAG" OR "GenAI" remote Europe "apply" OR "job" OR "position"',
-    # ML Platform / MLOps niche (Jurek's infrastructure angle)
-    '"ML platform engineer" OR "MLOps engineer" senior remote Europe hiring',
-    # Backend + AI hybrid (Jurek's strongest niche)
-    '"backend engineer" "machine learning" OR "LLM" OR "RAG" senior remote Europe contract',
-    # EU-specific job boards
-    'site:euremotejobs.com OR site:remote.io "machine learning" OR "AI engineer" senior',
+    # ── Tier 1: Verified sources (return real remote jobs) ────────────────────
+    # RemoteOK — only individual postings (not category pages)
+    'site:remoteok.com/remote-jobs "machine learning" OR "ML engineer" OR "AI engineer" senior',
+    'site:remoteok.com/remote-jobs "backend" "AI" OR "LLM" OR "RAG" senior engineer',
+    # EU Remote Jobs — EU-timezone remote, well-indexed
+    'site:euremotejobs.com "machine learning" OR "AI engineer" OR "ML engineer"',
+    'site:euremotejobs.com "MLOps" OR "LLM" OR "RAG" OR "GenAI" engineer',
+    # ── Tier 2: Strong remote-first boards ───────────────────────────────────
+    # Himalayas — curated remote-first, good EU coverage
+    'site:himalayas.app "machine learning" OR "AI engineer" OR "ML engineer" senior',
+    # Arc.dev — remote engineers platform
+    'site:arc.dev "senior" "machine learning" OR "AI" OR "LLM" engineer',
+    # Wellfound (AngelList) — startup senior AI/ML roles
+    'site:wellfound.com "senior" "machine learning" OR "AI engineer" remote Europe',
+    # ── Tier 3: Broad keyword (broad net, higher noise) ───────────────────────
+    # Backend + AI hybrid — Jurek's strongest niche (Java/Spring/AWS + LLM/RAG)
+    '"backend engineer" "LLM" OR "RAG" OR "AI" senior remote Europe contract OR permanent',
 ]
 
 # ── Relevance scoring weights ─────────────────────────────────────────────────

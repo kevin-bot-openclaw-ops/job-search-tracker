@@ -116,6 +116,7 @@ NON_JOB_URL_PATTERNS = [
     "ziprecruiter.com/salary", "payscale.com", "compensation",
     "wikipedia.org",
     "udemy.com", "coursera.org", "edx.org",  # courses, not jobs
+    "omnis.partners",  # aggregator with known hybrid/remote mismatch
 ]
 NON_JOB_TITLE_PATTERNS = [
     "salary guide", "salary calculator", "complete guide", "how to",
